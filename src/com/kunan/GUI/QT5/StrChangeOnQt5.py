@@ -1,7 +1,8 @@
 import re
 import sys
-
 from PyQt5.Qt import *
+
+import ctypes
 
 
 class StrChangeOnQt5(QWidget):
@@ -14,6 +15,12 @@ class StrChangeOnQt5(QWidget):
         # 设置窗口大小 可调整窗口大小
         # self.resize(530, 750)
 
+        # 创建文本标签控件: 待转换文本
+        self.labelTex1 = QLabel(self)
+        # 为控件设置文本 待转换
+        self.labelTex1.setText("待转换文本")
+        # 字体样式设置
+        self.labelTex1.setFont(QFont)
 
 if __name__ == '__main__':
     # 创建一个应用程序对象
