@@ -1,5 +1,6 @@
 import re
 import sys
+from PyQt5 import QtCore
 from PyQt5.Qt import *
 
 class StrChangeOnQt5(QWidget):
@@ -82,6 +83,90 @@ class StrChangeOnQt5(QWidget):
         # 设置按钮字体样式
         self.CopyBtn.setFont(QFont("宋体", 14, QFont.Bold))
 
+        """按钮"""
+        self.TopBtn = QPushButton(self)
+        # 设置按钮文本
+        self.TopBtn.setText("顶置窗口")
+        # 设置按钮位置
+        self.TopBtn.move(230, 50)
+        # 设置按钮大小
+        self.TopBtn.resize(60, 30)
+        # 设置按钮字体样式
+        self.TopBtn.setFont(QFont("宋体", 10, QFont.Thin))
+
+        """取消顶置按钮"""
+        self.OffTopBtn = QPushButton(self)
+        # 设置按钮文本
+        self.OffTopBtn.setText("取消顶置")
+        # 设置按钮位置
+        self.OffTopBtn.move(230, 100)
+        # 设置按钮大小
+        self.OffTopBtn.resize(60, 30)
+        # 设置按钮字体样式
+        self.OffTopBtn.setFont(QFont("宋体", 10, QFont.Thin))
+
+        """清除文本按钮"""
+        self.ClearBtn = QPushButton(self)
+        # 设置按钮文本
+        self.ClearBtn.setText("清空内容")
+        # 设置按钮位置
+        self.ClearBtn.move(230, 150)
+        # 设置按钮大小
+        self.ClearBtn.resize(60, 30)
+        # 设置按钮字体样式
+        self.ClearBtn.setFont(QFont("宋体", 10, QFont.Thin))
+
+        # 设置按钮事件
+        # 转换按钮事件
+        self.ChangeBtn.clicked.connect(self.ChangeTex)
+        # 复制按钮事件
+        self.CopyBtn.clicked.connect(self.CopyTex)
+        # 置顶窗口按钮事件
+        self.TopBtn.clicked.connect(self.TopWindow)
+        # 取消置顶按钮事件
+        self.OffTopBtn.clicked.connect(self.OffTopWindow)
+        # 清空按钮事件
+        self.ClearBtn.clicked.connect(self.ClearText)
+
+    """点击转换按钮触发事件"""
+
+    def ChangeTex(self):
+        print("转换按钮被点击")
+        gettext = self.TextEdit1.toPlainText().strip()
+        # QMessageBox.warning(self,"警告！ 文本为空！！")
+        if len(gettext) == 0:
+            self.TextEdit1.setPlaceholderText("请输入文本")
+        else:
+            print(gettext)
+            subtext = "('" + re.sub("\\n", "','", gettext) + "')"
+            print("转换完后文本:" + subtext)
+            self.TextEdit2.setText(subtext)
+
+    """复制按钮触事件"""
+
+    def CopyTex(self):
+        print("复制按钮被点击")
+        gettext1 = self.TextEdit2.toPlainText()
+        self.TextEdit2.setFocus()
+        self.TextEdit2.selectAll()
+        self.TextEdit2.copy()
+
+    """置顶窗口按钮触发事件"""
+    def TopWindow(self):
+        # 设置窗口置顶
+        self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+        self.setVisible(True)
+
+    """取消置顶按钮触发事件"""
+    def OffTopWindow(self):
+        # 取消窗口置顶
+        self.setWindowFlags(QtCore.Qt.Widget)
+        self.setVisible(True)
+
+    """清空文本按钮触发事件"""
+    def ClearText(self):
+        self.TextEdit1.clear()
+        self.TextEdit2.clear()
 
 
 if __name__ == '__main__':
