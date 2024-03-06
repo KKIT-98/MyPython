@@ -10,3 +10,18 @@
 
 # 20240305
 使用tkinter实现文本转换、窗口顶置、复制等效果
+
+# 20240306
+ttkbootstrap美化界面Meter组件学习
+
+
+Meter组件运行报错: AttributeError: module 'PIL.Image' has no attribute 'CUBIC'. Did you mean: 'BICUBIC'?
+解决: 找到报错文件widgets.py 856行
+```python
+# 修改前
+img.resize((self._metersize, self._metersize), Image.CUBIC)
+# 修改后
+img.resize((self._metersize, self._metersize), Image.BICUBIC)
+```
+
+            

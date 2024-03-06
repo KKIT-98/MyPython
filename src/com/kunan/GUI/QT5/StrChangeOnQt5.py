@@ -3,6 +3,7 @@ import sys
 from PyQt5 import QtCore
 from PyQt5.Qt import *
 
+
 class StrChangeOnQt5(QWidget):
     def __init__(self):
         super().__init__()
@@ -152,18 +153,21 @@ class StrChangeOnQt5(QWidget):
         self.TextEdit2.copy()
 
     """置顶窗口按钮触发事件"""
+
     def TopWindow(self):
         # 设置窗口置顶
         self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
         self.setVisible(True)
 
     """取消置顶按钮触发事件"""
+
     def OffTopWindow(self):
         # 取消窗口置顶
         self.setWindowFlags(QtCore.Qt.Widget)
         self.setVisible(True)
 
     """清空文本按钮触发事件"""
+
     def ClearText(self):
         self.TextEdit1.clear()
         self.TextEdit2.clear()

@@ -2,7 +2,6 @@ import re
 import tkinter as tk
 from tkinter import messagebox, INSERT
 
-
 # 设置窗口居中
 def center_window(window, width, height):
     # 获取显示屏宽度
