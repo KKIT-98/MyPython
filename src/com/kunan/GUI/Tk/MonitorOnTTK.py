@@ -4,42 +4,68 @@ import time
 import psutil
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
+
 root = ttk.Window(
-size=(350, 450)
+    size=(400, 400)
 )
-# root.place_window_center()
-# root.attributes('-topmost', True)
+root.place_window_center()
+root.attributes('-topmost', True)
 meter1 = ttk.Meter(
     master=root,
-    bootstyle='success',
-    # wedgesize=-1,
-    metertype='semi',
-    amounttotal=100,
-    amountused=0,
-    metersize=120,
-    #showtext=True,
-    #interactive=True,
-   # textleft='左边',
-   # textright='右边',
-    textfont="-size 8",
-    subtext="CPU使用率%",
-    subtextstyle='success',
-    subtextfont="-size 8"
-    )
-meter1.place(x=1, y=20)
+    bootstyle='success',  # 仪表主题
+    # wedgesize=-1, #
+    metertype='semi',  # 设置仪表盘的样式semi为半圆型
+    amounttotal=100,  # 仪表的最大值
+    amountused=0,  # 仪表的当前值
+    metersize=180,  # 仪表盘的大小
+    # showtext=True, # 是否可以在仪表盘上显示左中右文本标签
+    # interactive=True, # 是否可以手动调节数字大小
+    # textleft='左边',  # 插入中心文本左侧字符
+    # textright='右边',
+    textfont="-size 16",  # 中间数字大小
+    subtext="CPU使用率%",  # 中间文本
+    subtextstyle='success',  # 显示值主题
+    subtextfont="-size 16"  # 显示值的字体
+)
 
+# meter1.pack(side=ttk.LEFT, padx=5)
+meter1.place(x=1, y=50)
 labelText1 = ttk.Label(root, bootstyle='success', font=('黑体', 16), text='下载速率:')
 labelText1.place(x=1, y=230)
 
+labelText2 = ttk.Label(root, bootstyle='success', font=('黑体', 16))
+labelText2.place(x=100, y=230)
+
+
 def _():
-    return 1
+    meter = ttk.Meter(
+        metersize=180,
+        # padding=50,
+        amountused=0,
+        metertype='semi',
+        subtext='内存使用率%',
+        subtextstyle=INFO,
+        interactive=False,
+        bootstyle=INFO,
+        subtextfont='-size 16'
+    )
+    # meter.pack(side=ttk.LEFT, padx=5)
+    meter.place(x=200, y=50)
+    while True:
+        if getCpuUse() > 60:
+            meter1.configure(amountused=getCpuUse(), bootstyle=DANGER, subtextstyle=DANGER)
+        else:
+            meter.configure(amountused=int(getMemUse() * 100))
+            meter1.configure(amountused=getCpuUse(), bootstyle=SUCCESS, subtextstyle=SUCCESS)
+        labelText2.configure(text=getNet())
+
 
 def getNet():
     recv_before = psutil.net_io_counters().bytes_recv
     time.sleep(1)
     recv_now = psutil.net_io_counters().bytes_recv
     recv = recv_now - recv_before
-    return  getNetHigh(recv)
+    return getNetHigh(recv)
 
 
 def getNetHigh(net_bytes: int):
@@ -67,6 +93,7 @@ def getNetHigh(net_bytes: int):
     else:
         return "xx.xB/S"
 
+
 def getMemUse():
     free = str(round(psutil.virtual_memory().free / (1024.0 * 1024.0 * 1024.0), 2))
     total = str(round(psutil.virtual_memory().total / (1024.0 * 1024.0 * 1024.0), 2))
@@ -76,7 +103,8 @@ def getMemUse():
 def getCpuUse():
     return psutil.cpu_percent(interval=1)
 
-t = threading.Thread()
+
+t = threading.Thread(target=_)
 t.setDaemon(True)
 t.start()
 root.mainloop()

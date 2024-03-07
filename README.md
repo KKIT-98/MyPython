@@ -24,4 +24,8 @@ img.resize((self._metersize, self._metersize), Image.CUBIC)
 img.resize((self._metersize, self._metersize), Image.BICUBIC)
 ```
 
+# 20240307
+- ttkbootstrap 制作简单性能监控仪表
+- 简单todo list实现
+
             
