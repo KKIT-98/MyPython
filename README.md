@@ -28,4 +28,6 @@ img.resize((self._metersize, self._metersize), Image.BICUBIC)
 - ttkbootstrap 制作简单性能监控仪表
 - 简单todo list实现
 
+# 20240310
+- 实现了todo列表，可保存任务及读取
             
