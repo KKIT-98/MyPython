@@ -30,4 +30,6 @@ img.resize((self._metersize, self._metersize), Image.BICUBIC)
 
 # 20240310
 - 实现了todo列表，可保存任务及读取
-            
+
+# 20240317
+- 使用TTK实现简单词云生成器
