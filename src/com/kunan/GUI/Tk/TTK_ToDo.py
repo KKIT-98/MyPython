@@ -1,9 +1,9 @@
 import re
 from tkinter import messagebox
-
 import ttkbootstrap as ttk
+import os.path
 from ttkbootstrap import Window, WARNING, INFO, SUCCESS
-from pathlib import Path
+
 root = Window(
     size=(580, 450),
     resizable=(False, False),  # 禁止窗口缩放
@@ -24,15 +24,23 @@ dt.place(x=1, y=1)
 # todayText.place(x=150, y=60)
 
 # 获取当前电脑用户目录下文档目录 需先安装 pip install pathlib
-home_directory = str(Path.home()) + '/Documents/'
+home_directory = str(os.path.expanduser('~')) + '/Documents/'
 root.title(dt.entry.get() + '日任务')
 
 style = ttk.Style()
-theme_names = style.theme_names()  # 以列表的形式返回多个主题名
-
+theme_names_en = style.theme_names()  # 以列表的形式返回多个主题名
+# ['cosmo', 'flatly', 'litera', 'minty', 'lumen', 'sandstone', 'yeti', 'pulse', 'united', 'morph', 'journal',
+# 'darkly', 'superhero', 'solar', 'cyborg', 'vapor', 'simplex', 'cerculean']
+print(theme_names_en)
+# 根据返回的主题名进行汉化
+theme_names_zh = ['天蓝', '深蓝', '浅蓝', '薄荷绿', '流蓝', '砂岩蓝', '雪蓝', '脉冲紫', '橙黄', '浅蓝主题', '柚子红',  '暗黑', '暗黑浅蓝', '暗黑深蓝', '赛博灰', '蒸汽紫', '简约', '清新蓝']
+print(theme_names_zh)
+# 拼接为['cosmo,天蓝','flatly,深蓝'....] 英 中绑定
+theme_names = [a + ',' + b for a, b in zip(theme_names_en, theme_names_zh)]
+print(theme_names)
 # 创建一个主题筛选框将主题名放进去
 theme_cob = ttk.Combobox(master=root,
-                         values=theme_names,
+                         values=theme_names_zh,  # 汉化后
                          width=7,
                          font=('Consolas', 12, 'bold')
                          )
@@ -41,8 +49,10 @@ theme_cob.current(0)  # 默认筛选框为第一个主题
 
 # 绑定选择主题后的方法
 def chang_theme(event):
-    theme_cob_value = theme_cob.get()
-    style.theme_use(theme_cob_value)  # 设置主题为选中的主题
+    theme_cob_value = theme_cob.get()  # 这里获取到的是中文主题
+    for theme_name in theme_names:  # 遍历绑定后的中英主题
+        if theme_name.split(',')[1] == theme_cob_value:  # 如果选择的主题与中问一致，设定主题为中文对应的英文主题
+            style.theme_use(theme_name.split(',')[0])  # 设置主题为选中的主题
 
 
 # 绑定选择主题后的执行的方法
